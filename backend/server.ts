@@ -9,6 +9,7 @@ connectDB();
 
 //Middlewares
 app.use(cors());
+app.use(express.json());
 
 // Routes API centralisées
 app.use('/api/shop', router)

@@ -1,0 +1,124 @@
+.shop-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+h1 {
+  color: #444;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.shop-description {
+  text-align: center;
+  color: #666;
+  margin-bottom: 30px;
+}
+
+.loading, .error {
+  text-align: center;
+  padding: 40px;
+  font-size: 18px;
+}
+
+.error {
+  color: #d32f2f;
+}
+
+.books-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 25px;
+}
+
+.book-card {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s, box-shadow 0.3s;
+  background: white;
+  display: flex;
+  flex-direction: column; // Organiser le contenu en colonne
+  height: 100%; // Prendre toute la hauteur disponible
+}
+
+.book-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.book-image-container {
+  height: 250px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f5f5f5;
+}
+
+.book-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.book-details {
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1; // Prendre l'espace restant
+}
+
+.book-title {
+  font-size: 18px;
+  margin: 0 0 5px;
+  color: #333;
+}
+
+.book-author {
+  font-size: 14px;
+  color: #666;
+  margin: 0 0 10px;
+  font-style: italic;
+}
+
+.book-price {
+  font-weight: bold;
+  color: #2e7d32;
+  margin: 10px 0;
+}
+
+.book-description {
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 15px;
+  line-height: 1.4;
+}
+
+.book-actions {
+  margin-top: auto; // Pousse le conteneur des actions vers le bas
+  display: flex;
+  justify-content: center; // Centre horizontalement
+  padding-top: 15px;
+  padding-bottom: 15px;
+  width: 100%; // Prend toute la largeur disponible
+}
+
+.add-to-cart-button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.3s;
+  background-color: #1976d2;
+  color: white;
+  width: 80%; // Largeur du bouton à 80% du conteneur
+  text-align: center;
+}
+
+.add-to-cart-button:hover {
+  background-color: #1565c0;
+}

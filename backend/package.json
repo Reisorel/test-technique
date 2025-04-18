@@ -3,7 +3,11 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "seed": "node dist/seeds/indexSeeds.js",
+    "dev": "tsc && node dist/index.js",
+    "seed:dev": "tsc && node dist/seeds/indexSeeds.js"
   },
   "keywords": [],
   "author": "",

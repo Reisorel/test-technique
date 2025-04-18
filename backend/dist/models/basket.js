@@ -52,7 +52,7 @@ const basketSchema = new mongoose_1.Schema({
         {
             bookId: {
                 type: mongoose_1.Schema.Types.ObjectId,
-                ref: "book", // doit matcher le nom de ton modèle `Book`
+                ref: "Book", // doit matcher le nom de ton modèle `Book`
                 required: true,
             },
             quantity: {

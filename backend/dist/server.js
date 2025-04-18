@@ -12,6 +12,7 @@ const app = (0, express_1.default)(); // Créer une application express
 (0, db_1.default)();
 //Middlewares
 app.use((0, cors_1.default)());
+app.use(express_1.default.json());
 // Routes API centralisées
 app.use('/api/shop', indexRoutes_1.default);
 // Sert le frontend

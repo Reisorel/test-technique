@@ -43,38 +43,53 @@ const getBasketById = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         res.status(500).json({ message: "Error during basket research" });
     }
 });
-//Add new book to basket
+// Ajoutez ces logs pour suivre le cheminement de la requête
 const addNewBookToBasket = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log("➡️ Requête POST reçue pour ajouter un livre au panier");
+    console.log("🔍 Params:", req.params);
+    console.log("📦 Body:", req.body);
     try {
         // 1. Récupère le panier
+        console.log("🔍 Recherche du panier avec ID:", req.params.id);
         const basket = yield basket_1.default.findById(req.params.id);
         if (!basket) {
+            console.log("❌ Panier non trouvé avec ID:", req.params.id);
             res.status(404).json({ message: "Basket not found" });
             return;
         }
+        console.log("✅ Panier trouvé:", basket._id);
         // 2. Récupère les données du corps de la requête
         const { bookId, quantity } = req.body;
         if (!bookId || !quantity) {
+            console.log("❌ Données manquantes:", { bookId, quantity });
             res.status(400).json({ message: "Book ID and quantity are required" });
             return;
         }
+        console.log("📚 Données du livre:", { bookId, quantity });
         // 3. Vérifie que le livre existe
+        console.log("🔍 Recherche du livre avec ID:", bookId);
         const bookExists = yield book_1.default.findById(bookId);
         if (!bookExists) {
+            console.log("❌ Livre non trouvé avec ID:", bookId);
             res.status(404).json({ message: "Book not found" });
             return;
         }
+        console.log("✅ Livre trouvé:", bookExists.title);
         // 4. Cherche si le livre est déjà présent dans le panier
+        console.log("🔍 Vérification si le livre est déjà dans le panier");
         const existingBook = basket.books.find((book) => book.bookId.toString() === bookId);
         // 5. Incrémente ou ajoute le livre
         if (existingBook) {
+            console.log("📈 Incrémentation de la quantité pour un livre existant");
             existingBook.quantity += quantity;
         }
         else {
+            console.log("➕ Ajout d'un nouveau livre au panier");
             basket.books.push({ bookId, quantity });
         }
         // 6. Recalcule le bookNumber
         basket.bookNumber = basket.books.reduce((sum, book) => sum + book.quantity, 0);
+        console.log("🧮 Nouveau nombre de livres:", basket.bookNumber);
         // Recalcule le totalPrice
         let total = 0;
         for (const item of basket.books) {
@@ -84,12 +99,20 @@ const addNewBookToBasket = (req, res) => __awaiter(void 0, void 0, void 0, funct
             }
         }
         basket.totalPrice = total;
+        console.log("💰 Nouveau prix total:", basket.totalPrice);
         // 7. Sauvegarde et renvoie
+        console.log("💾 Sauvegarde du panier mis à jour");
         yield basket.save();
+        console.log("✅ Panier sauvegardé avec succès");
         res.status(200).json({ message: "Book added to basket", basket });
     }
     catch (error) {
-        res.status(500).json({ message: "Error adding book to basket", error });
+        console.error("❌ Erreur lors de l'ajout du livre au panier:", error);
+        res.status(500).json({
+            message: "Error adding book to basket",
+            error: error.message,
+            stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
+        });
     }
 });
 const deleteBookFromBasket = (req, res) => __awaiter(void 0, void 0, void 0, function* () {

@@ -30,7 +30,7 @@ const basketSchema: Schema<Ibasket> = new Schema(
       {
         bookId: {
           type: Schema.Types.ObjectId,
-          ref: "book", // doit matcher le nom de ton modèle `Book`
+          ref: "Book", // doit matcher le nom de ton modèle `Book`
           required: true,
         },
         quantity: {
