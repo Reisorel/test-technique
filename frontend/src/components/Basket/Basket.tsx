@@ -27,7 +27,6 @@ export default function Basket() {
   const [updatingQuantity, setUpdatingQuantity] = useState<{ [key: string]: boolean }>({});
   const basketId = "680745c147db4aad10d4c81c"; // Assurez-vous que cet ID est correct
 
-  // Modifiez la fonction fetchBasket comme suit
   const fetchBasket = async () => {
     try {
       setLoading(true);
@@ -57,9 +56,16 @@ export default function Basket() {
       if (basketData.books.length === 0 || basketData.bookNumber === 0) {
         setBasketData({
           basketId: basketId,
-          books: [],
-          totalPrice: 0,
-          discountedPrice: 0,
+          books: basketData.books.map(item => ({
+            id: item.bookId._id || item.bookId,
+            title: item.bookId.title || "Titre inconnu",
+            author: item.bookId.author || "Auteur inconnu",
+            price: item.bookId.price || 0,
+            image: item.bookId.image || "",
+            quantity: item.quantity || 0
+          })),
+          totalPrice: basketData.totalPrice || 0,
+          discountedPrice: basketData.totalPrice || 0,
           discount: 0
         });
         return;
@@ -69,16 +75,16 @@ export default function Basket() {
       const discountResponse = await fetch(`http://localhost:3000/api/shop/discounts/${basketId}`);
 
       if (!discountResponse.ok) {
-        // En cas d'erreur avec l'API de remises, utiliser les données du panier sans remise
+        // En cas d'erreur, utiliser les données du panier sans remise
         setBasketData({
-          basketId: basketData._id,
-          books: basketData.books.map((book) => ({
-            id: book.bookId._id || book.bookId,
-            title: book.bookId.title || "Titre indisponible",
-            author: book.bookId.author || "Auteur indisponible",
-            price: book.bookId.price || 0,
-            image: book.bookId.image || "",
-            quantity: book.quantity || 0
+          basketId: basketId,
+          books: basketData.books.map(item => ({
+            id: item.bookId._id || item.bookId,
+            title: item.bookId.title || "Titre inconnu",
+            author: item.bookId.author || "Auteur inconnu",
+            price: item.bookId.price || 0,
+            image: item.bookId.image || "",
+            quantity: item.quantity || 0
           })),
           totalPrice: basketData.totalPrice || 0,
           discountedPrice: basketData.totalPrice || 0,
@@ -87,12 +93,12 @@ export default function Basket() {
         return;
       }
 
+      // Récupérer les données avec remises
       const discountData = await discountResponse.json();
       setBasketData(discountData);
 
     } catch (err) {
       console.error("Erreur lors de la récupération du panier:", err);
-      // Ne pas définir d'erreur pour un panier vide
       setError("Une erreur est survenue lors du chargement de votre panier");
     } finally {
       setLoading(false);
@@ -131,27 +137,11 @@ export default function Basket() {
       const data = await response.json();
       console.log("Panier mis à jour:", data);
 
-      // Mettre à jour l'état local pour refléter les changements
-      // Alternativement, vous pourriez appeler fetchBasket() pour recharger toutes les données
-      setBasketData(prevData => {
-        if (!prevData) return prevData;
-
-        // Mettre à jour la quantité localement en attendant le rechargement des données
-        return {
-          ...prevData,
-          books: prevData.books.map(book =>
-            book.id === bookId
-              ? { ...book, quantity: book.quantity + 1 }
-              : book
-          ),
-          // Mettre à jour le prix total (approximation)
-          totalPrice: prevData.totalPrice + (prevData.books.find(b => b.id === bookId)?.price || 0)
-        };
-      });
+      // Recharger toutes les données du panier avec les remises
+      await fetchBasket();
 
     } catch (err) {
       console.error("Erreur lors de l'augmentation de la quantité:", err);
-      // Vous pourriez ajouter un message d'erreur pour l'utilisateur ici
     } finally {
       // Marquer la fin de la mise à jour
       setUpdatingQuantity(prev => ({ ...prev, [bookId]: false }));
