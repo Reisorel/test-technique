@@ -115,31 +115,36 @@ const addNewBookToBasket = (req, res) => __awaiter(void 0, void 0, void 0, funct
         });
     }
 });
-const deleteBookFromBasket = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const decreaseBookQuantity = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log("➡️ FONCTION DECREASE APPELÉE");
+    console.log("🔍 TOUS LES PARAMS:", req.params);
     try {
-        // 1. Récupère le panier
+        // 1. Récupérer le panier
         const basket = yield basket_1.default.findById(req.params.id);
         if (!basket) {
             res.status(404).json({ message: "Basket not found" });
             return;
         }
-        // 2. Récupère le bookId à supprimer
-        const { bookId } = req.body;
-        if (!bookId) {
-            res.status(400).json({ message: "Book ID is required" });
-            return;
-        }
-        // 3. Vérifie si le livre est présent dans le panier
+        console.log("✅ Panier trouvé");
+        // 2. Trouver l'index du livre dans le panier
+        const bookId = req.params.bookId;
         const index = basket.books.findIndex((book) => book.bookId.toString() === bookId);
         if (index === -1) {
             res.status(404).json({ message: "Book not found in basket" });
             return;
         }
-        // 4. Supprime le livre du panier
-        basket.books.splice(index, 1);
-        // 5. Recalcule bookNumber
+        console.log("✅ Livre trouvé dans le panier");
+        // 3. Décrémente la quantité ou supprime si quantité = 1
+        if (basket.books[index].quantity > 1) {
+            basket.books[index].quantity -= 1;
+            console.log("📉 Quantité décrémentée à", basket.books[index].quantity);
+        }
+        else {
+            basket.books.splice(index, 1);
+            console.log("🗑️ Livre supprimé du panier car quantité = 1");
+        }
+        // 4. Recalculer les totaux
         basket.bookNumber = basket.books.reduce((sum, book) => sum + book.quantity, 0);
-        // 6. Recalcule totalPrice
         let total = 0;
         for (const item of basket.books) {
             const book = yield book_1.default.findById(item.bookId);
@@ -148,17 +153,26 @@ const deleteBookFromBasket = (req, res) => __awaiter(void 0, void 0, void 0, fun
             }
         }
         basket.totalPrice = total;
-        // 7. Sauvegarde et retourne le panier mis à jour
+        console.log("💰 Prix total recalculé:", basket.totalPrice);
+        // 5. Sauvegarder et renvoyer
         yield basket.save();
-        res.status(200).json({ message: "Book removed from basket", basket });
+        console.log("💾 Panier sauvegardé");
+        res.status(200).json({
+            message: "Book quantity decreased",
+            basket
+        });
     }
     catch (error) {
-        res.status(500).json({ message: "Error removing book from basket", error });
+        console.error("❌ ERREUR:", error);
+        res.status(500).json({
+            message: "Error decreasing book quantity",
+            error: error.message
+        });
     }
 });
 exports.default = {
     getAllBaskets,
     getBasketById,
     addNewBookToBasket,
-    deleteBookFromBasket,
+    decreaseBookQuantity,
 };

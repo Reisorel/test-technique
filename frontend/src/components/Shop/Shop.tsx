@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import './Shop.css'; // N'oubliez pas de créer ce fichier CSS pour les styles
+import Modal from '../Modal/Modal';
 
 interface Book {
   _id: string;
@@ -22,7 +23,9 @@ export default function Shop() {
   const [error, setError] = useState<string | null>(null);
   const [addingToCart, setAddingToCart] = useState<{ [key: string]: boolean }>({});
   const [cartMessage, setCartMessage] = useState<CartMessage | null>(null);
-  const basketId = '6802723644a0058580d523eb'; // L'ID que vous avez mentionné précédemment
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalBook, setModalBook] = useState<Book | null>(null);
+  const basketId = '680745c147db4aad10d4c81c'; // L'ID que vous avez mentionné précédemment
 
   useEffect(() => {
     const fetchBooks = async () => {
@@ -69,6 +72,23 @@ export default function Shop() {
         throw new Error(`Erreur HTTP: ${response.status}`);
       }
 
+      // Analyser la réponse JSON
+      const data = await response.json();
+
+      // Trouver le livre ajouté
+      const addedBook = books.find(book => book._id === bookId);
+      if (addedBook) {
+        setModalBook(addedBook);
+        setIsModalOpen(true);
+      }
+
+      // Ajouter ce console.log pour valider l'ajout
+      console.log("✅ Livre ajouté avec succès:", {
+        bookId: bookId,
+        basketId: basketId,
+        newBasket: data.basket // La réponse contient probablement le panier mis à jour
+      });
+
       // Afficher un message de succès
       setCartMessage({ message: "Livre ajouté au panier !", type: 'success' });
 
@@ -76,7 +96,6 @@ export default function Shop() {
       setTimeout(() => {
         setCartMessage(null);
       }, 3000);
-
     } catch (err) {
       console.error("Erreur lors de l'ajout au panier:", err);
 
@@ -95,6 +114,11 @@ export default function Shop() {
       // Désactiver le spinner
       setAddingToCart(prev => ({ ...prev, [bookId]: false }));
     }
+  };
+
+  // Ajoutez la navigation vers le panier
+  const navigateToBasket = () => {
+    window.location.href = '/basket';
   };
 
   if (loading) return <div className="loading">Chargement de la bibliothèque...</div>;
@@ -135,6 +159,20 @@ export default function Shop() {
           </div>
         ))}
       </div>
+
+      {/* Modale de confirmation d'ajout */}
+      {modalBook && (
+        <Modal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          title="Livre ajouté au panier"
+          message="Le livre a été ajouté à votre panier avec succès."
+          bookTitle={modalBook.title}
+          bookCover={modalBook.image}
+          buttonText="Voir mon panier"
+          onButtonClick={navigateToBasket}
+        />
+      )}
     </div>
   );
 }

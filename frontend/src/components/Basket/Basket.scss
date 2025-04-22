@@ -1,137 +1,85 @@
-@import '../../App.scss';
+.basket_item {
+  display: flex;
+  flex-direction: row;
+  margin: 1rem 0;
+  background-color: #ffffff; // Blanc pour un fond neutre
+  align-items: center;
+  padding: 1.5rem;
+  border-bottom: 1px solid #e0e0e0; // Gris clair pour la séparation
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); // Légère ombre pour l'effet de profondeur
+}
 
-.basket-container {
+.book_details {
+  height: 220px;
+  display: flex;
+  flex-direction: column;
+  margin-left: 1.5rem;
+  background-color: transparent; // Transparent au lieu de bleu turquoise
+
+  h3 {
+    color: #333333; // Gris foncé pour le titre
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    color: #555555; // Gris moyen pour le texte
+  }
+}
+
+.basket-image-container {
+  width: 150px;
+  height: 220px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f8f8f8; // Gris très clair pour le fond des images
+  flex-shrink: 0;
+  border-radius: 6px; // Bords légèrement arrondis
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); // Légère ombre
+}
+
+.basket-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+// Styles supplémentaires pour améliorer l'apparence globale
+.basket_container {
   max-width: 1200px;
   margin: 0 auto;
   padding: 2rem 1rem;
-
-  h1 {
-    font-family: var(--font-display);
-    text-align: center;
-    margin-bottom: 2rem;
-    color: #333;
-  }
 }
 
-.basket-loading, .basket-error, .empty-basket {
+h1 {
+  color: #333333;
   text-align: center;
-  padding: 3rem 1rem;
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 2rem;
+  font-weight: 600;
 }
 
-.basket-error {
-  color: #d32f2f;
-}
-
-.basket-content {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 2rem;
-
-  @media (min-width: 992px) {
-    grid-template-columns: 2fr 1fr;
-  }
-}
-
-// Section des articles
-.basket-items {
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
-}
-
-.basket-header {
-  display: none;
-  padding: 1rem 1.5rem;
-  background: #f5f5f5;
-  font-weight: 500;
-  color: #555;
-
-  @media (min-width: 768px) {
-    display: grid;
-    grid-template-columns: 3fr 1fr 1.5fr 1fr 0.5fr;
-  }
-}
-
-.basket-item {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 1rem;
-  padding: 1.5rem;
-  border-bottom: 1px solid #eee;
-
-  @media (min-width: 768px) {
-    grid-template-columns: 3fr 1fr 1.5fr 1fr 0.5fr;
-    gap: 0;
-    align-items: center;
-  }
-
-  &:last-child {
-    border-bottom: none;
-  }
-}
-
-.item-product {
+.quantity_control {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  margin: 0.8rem 0;
 
-  img {
-    width: 70px;
-    height: 105px;
-    object-fit: cover;
-    border-radius: 4px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  }
-
-  .product-info {
-    h3 {
-      font-family: var(--font-display);
-      font-size: 1.1rem;
-      margin: 0 0 0.3rem;
-    }
-
-    .author {
-      font-style: italic;
-      margin: 0 0 0.3rem;
-      color: #666;
-    }
-
-    .isbn {
-      font-size: 0.8rem;
-      color: #999;
-      margin: 0;
-    }
-  }
-}
-
-.item-price, .item-total {
-  font-weight: 500;
-}
-
-.item-quantity {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-
-  .quantity-btn {
+  .quantity_button {
+    background-color: #f5f5f5;
+    border: 1px solid #e0e0e0;
+    color: #333;
     width: 30px;
     height: 30px;
-    border: 1px solid #ddd;
-    background: white;
-    border-radius: 4px;
-    font-size: 1.1rem;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: all 0.2s;
+    border-radius: 4px;
+    transition: background-color 0.2s;
 
     &:hover:not(:disabled) {
-      background: #f5f5f5;
+      background-color: #e0e0e0;
     }
 
     &:disabled {
@@ -140,144 +88,107 @@
     }
   }
 
-  .quantity-value {
-    min-width: 30px;
-    text-align: center;
+  .quantity {
+    margin: 0 0.8rem;
     font-weight: 500;
   }
 }
 
-.item-actions {
-  text-align: right;
-
-  .remove-btn {
-    width: 28px;
-    height: 28px;
-    border: none;
-    background: #f5f5f5;
-    border-radius: 50%;
-    font-size: 0.9rem;
-    cursor: pointer;
-    transition: all 0.2s;
-
-    &:hover {
-      background: #e0e0e0;
-      color: #d32f2f;
-    }
-  }
-}
-
-// Section récapitulatif
-.basket-summary {
-  background: white;
+.basket_summary {
+  background-color: #ffffff;
   border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   padding: 1.5rem;
+  margin-top: 1.5rem;
 
   h2 {
-    font-family: var(--font-display);
-    font-size: 1.3rem;
+    color: #333333;
     margin-top: 0;
-    margin-bottom: 1.5rem;
-    padding-bottom: 0.5rem;
-    border-bottom: 1px solid #eee;
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
   }
 
-  .summary-row {
+  .summary_row {
     display: flex;
     justify-content: space-between;
     margin-bottom: 0.8rem;
 
-    &.discount {
-      color: #2e7d32;
-      font-weight: 500;
-    }
-
     &.total {
-      font-size: 1.2rem;
-      font-weight: 700;
+      font-weight: 600;
+      font-size: 1.1rem;
       margin-top: 1rem;
       padding-top: 1rem;
-      border-top: 1px solid #eee;
+      border-top: 1px solid #e0e0e0;
+    }
+
+    .label {
+      color: #555555;
+    }
+
+    .value {
+      color: #333333;
+
+      &.discount {
+        color: #2e7d32; // Vert pour les remises
+      }
     }
   }
 
-  .checkout-btn {
-    width: 100%;
-    background: #1976d2;
+  .original_price {
+    text-decoration: line-through;
+    color: #999999;
+    margin-right: 0.5rem;
+  }
+
+  .checkout_button {
+    background-color: #1976d2;
     color: white;
     border: none;
-    padding: 1rem;
     border-radius: 4px;
-    font-size: 1rem;
-    font-weight: 500;
-    margin-top: 1.5rem;
-    cursor: pointer;
-    transition: background 0.2s;
-
-    &:hover {
-      background: #1565c0;
-    }
-  }
-
-  .continue-shopping-btn {
-    width: 100%;
-    background: transparent;
-    color: #1976d2;
-    border: 1px solid #1976d2;
     padding: 0.8rem;
-    border-radius: 4px;
-    font-size: 0.9rem;
-    margin-top: 1rem;
-    cursor: pointer;
-    transition: all 0.2s;
-
-    &:hover {
-      background: #f5f8ff;
-    }
-  }
-}
-
-// Style pour les boutons dans le panier vide
-.empty-basket {
-  .continue-shopping-btn {
-    background: #1976d2;
-    color: white;
-    border: none;
-    padding: 1rem 2rem;
-    border-radius: 4px;
-    font-size: 1rem;
+    width: 100%;
     margin-top: 1.5rem;
+    font-weight: 500;
     cursor: pointer;
-    transition: background 0.2s;
+    transition: background-color 0.2s;
 
     &:hover {
-      background: #1565c0;
+      background-color: #1565c0;
     }
   }
-}
 
-// État de chargement
-.basket-loading {
-  position: relative;
-  min-height: 200px;
-
-  &::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 50px;
-    height: 50px;
-    border: 3px solid #f3f3f3;
-    border-top: 3px solid #1976d2;
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
+  .summary_books_list {
+    margin-bottom: 20px;
   }
-}
 
-@keyframes spin {
-  0% { transform: translate(-50%, -50%) rotate(0deg); }
-  100% { transform: translate(-50%, -50%) rotate(360deg); }
+  .summary_books_list h3 {
+    font-size: 16px;
+    margin-bottom: 10px;
+  }
+
+  .summary_books_table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+
+  .summary_books_table th {
+    text-align: left;
+    padding: 5px;
+    color: #666;
+    font-weight: 600;
+    border-bottom: 1px solid #eee;
+  }
+
+  .summary_books_table td {
+    padding: 5px;
+    border-bottom: 1px solid #eee;
+  }
+
+  .summary_divider {
+    margin: 15px 0;
+    border: 0;
+    height: 1px;
+    background-color: #eee;
+  }
 }

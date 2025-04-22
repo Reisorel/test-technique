@@ -20,7 +20,7 @@ const books = [
         author: "JK Bowling",
         isbn: 9781234560011,
         price: 35,
-        image: "https://example.com/echo.jpg",
+        image: "/images/covers/tome_1.png",
         description: "Premier tome des aventures de Henri Potier.",
     },
     {
@@ -28,7 +28,7 @@ const books = [
         author: "JK Bowling",
         isbn: 9781234560028,
         price: 30,
-        image: "https://example.com/binaire.jpg",
+        image: "/images/covers/tome_2.png",
         description: "Henri affronte un puissant sorcier développeur.",
     },
     {
@@ -36,7 +36,7 @@ const books = [
         author: "JK Bowling",
         isbn: 9781234560035,
         price: 25,
-        image: "https://example.com/git.jpg",
+        image: "/images/covers/tome_3.png",
         description: "Une histoire de branches magiques et de merge conflictuels.",
     },
     {
@@ -44,7 +44,7 @@ const books = [
         author: "JK Bowling",
         isbn: 9781234560042,
         price: 28,
-        image: "https://example.com/backend.jpg",
+        image: "/images/covers/tome_4.png",
         description: "Henri explore les mystères du serveur obscur.",
     },
     {
@@ -52,7 +52,7 @@ const books = [
         author: "JK Bowling",
         isbn: 9781234560059,
         price: 32,
-        image: "https://example.com/bibliotheque.jpg",
+        image: "/images/covers/tome_5.png",
         description: "Le savoir est magique, surtout en JSON.",
     },
 ];

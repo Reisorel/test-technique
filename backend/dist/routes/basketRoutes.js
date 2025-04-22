@@ -9,5 +9,5 @@ const router = (0, express_1.Router)();
 router.get("/", basketController_1.default.getAllBaskets);
 router.get("/:id", basketController_1.default.getBasketById);
 router.post("/:id", basketController_1.default.addNewBookToBasket);
-router.delete("/:id", basketController_1.default.deleteBookFromBasket);
+router.delete('/:id/books/:bookId', basketController_1.default.decreaseBookQuantity);
 exports.default = router;
